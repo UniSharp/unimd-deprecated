@@ -1,17 +1,15 @@
 <?php
 
-namespace App\Swoole;
+namespace App\Swoole\Handlers;
 
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Swoole\WebSocket\Server;
 
-class WebSocket
+class WebSocketHandler
 {
-    public $server;
     protected $dispatchers;
 
-    public function __construct(Server $server) {
-        $this->server = $server;
+    public function __construct() {
         $this->dispatchers = config('swoole.dispatchers');
     }
 

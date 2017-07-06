@@ -27,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton('websocket', function ($app) {
-            return new WebSocket(new Server(config('swoole.websocket.server'), config('swoole.websocket.port')));
+            return new Server(config('swoole.websocket.server'), config('swoole.websocket.port'));
         });
         $this->app->singleton('output', function ($app) {
             return $app->make(ConsoleOutput::class);

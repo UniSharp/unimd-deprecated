@@ -3,11 +3,11 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Swoole\WebSocket;
+use App\Swoole\Handlers\WebSocketHandler;
 
 class SocketCommand extends Command
 {
-    protected $websocket;
+    protected $handler;
     protected $server;
 
     /**
@@ -52,15 +52,15 @@ class SocketCommand extends Command
 
     public function init()
     {
-        $this->websocket = app('websocket');
-        $this->server = app('websocket')->server;
+        $this->handler = app()->make(WebSocketHandler::class);
+        $this->server = app('websocket');
     }
 
     public function register()
     {
-        $this->server->on('start', [$this->websocket, 'onStart']);
-        $this->server->on('open', [$this->websocket, 'onOpen']);
-        $this->server->on('message', [$this->websocket, 'onMessage']);
-        $this->server->on('close', [$this->websocket, 'onClose']);
+        $this->server->on('start', [$this->handler, 'onStart']);
+        $this->server->on('open', [$this->handler, 'onOpen']);
+        $this->server->on('message', [$this->handler, 'onMessage']);
+        $this->server->on('close', [$this->handler, 'onClose']);
     }
 }
