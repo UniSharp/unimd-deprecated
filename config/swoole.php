@@ -7,5 +7,6 @@ return [
     ],
     'dispatchers' => [
         'action' => 'App\Swoole\Handlers\ExampleHandler@index',
+        'chat' => 'App\Swoole\Handlers\ExampleHandler@chat',
     ]
 ];

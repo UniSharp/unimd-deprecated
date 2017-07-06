@@ -11,7 +11,12 @@ class ExampleHandler extends BaseHandler
 
     public function index($server, $data, $fd)
     {
-        $this->broadcast($server, 'test');
+        $this->broadcast($server, $data);
         app('output')->writeln('push succeed');
+    }
+
+    public function chat($server, $data, $fd)
+    {
+        $this->broadcast($server, "user {$fd}: " . $data->message);
     }
 }
