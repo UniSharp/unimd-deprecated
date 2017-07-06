@@ -17,6 +17,16 @@ class WebSocketHandler
         app('output')->writeln("websocket server started: <ws://{$server->host}:$server->port>");
     }
 
+    public function onWorkerStart(Server $server) {
+        // check heartbeat
+        $interval = config('heartbeat_check_interval') * 1000;
+        $server->tick($interval, function ($id) use ($server) {
+            foreach($server->connections as $fd){
+                $server->push($fd, 0, 0x9);
+            }
+        });
+    }
+
     public function onOpen(Server $server, $request) {
         app('output')->writeln("server: handshake succeeed with client-{$request->fd}");
     }

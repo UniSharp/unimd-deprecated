@@ -59,6 +59,7 @@ class SocketCommand extends Command
     public function register()
     {
         $this->server->on('start', [$this->handler, 'onStart']);
+        $this->server->on('workerstart', [$this->handler, 'onWorkerStart']);
         $this->server->on('open', [$this->handler, 'onOpen']);
         $this->server->on('message', [$this->handler, 'onMessage']);
         $this->server->on('close', [$this->handler, 'onClose']);
