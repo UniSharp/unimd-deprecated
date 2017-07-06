@@ -19,7 +19,7 @@ class WebSocketHandler
 
     public function onWorkerStart(Server $server) {
         // check heartbeat
-        $interval = config('heartbeat_check_interval') * 1000;
+        $interval = config('swoole.settings.heartbeat_check_interval') * 1000;
         $server->tick($interval, function ($id) use ($server) {
             foreach($server->connections as $fd){
                 $server->push($fd, 0, 0x9);

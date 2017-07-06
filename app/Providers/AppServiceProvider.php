@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use App\Swoole\WebSocket;
 use Swoole\WebSocket\Server;
+use Illuminate\Session\CookieSessionHandler;
 
 class AppServiceProvider extends ServiceProvider
 {

@@ -18,3 +18,7 @@ Route::get('/', function () {
 Route::get('/websocket', function () {
     return view('websocket');
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
