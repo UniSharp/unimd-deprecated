@@ -4,13 +4,16 @@ namespace App\Swoole\Handlers;
 
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Swoole\WebSocket\Server;
+use Illuminate\Session\Middleware\StartSession;
 
-class WebSocketHandler
+class WebSocketHandler extends BaseHandler
 {
     protected $dispatchers;
+    protected $sessionMiddleware;
 
     public function __construct() {
         $this->dispatchers = config('swoole.dispatchers');
+        $this->sessionMiddleware = app()->make(StartSession::class);
     }
 
     public function onStart(Server $server) {
@@ -29,6 +32,12 @@ class WebSocketHandler
 
     public function onOpen(Server $server, $request) {
         app('output')->writeln("server: handshake succeeed with client-{$request->fd}");
+        // auth user
+        $request = $this->makeRequest($request);
+        $request = $this->sessionMiddleware->handle($request, function ($pipe) {
+            return response('');
+        });
+        // app('output')->writeln(json_encode(auth()->user()));
     }
 
     public function onMessage(Server $server, $frame) {
