@@ -3,9 +3,11 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use App\Swoole\WebSocket;
 
 class SocketCommand extends Command
 {
+    protected $websocket;
     protected $server;
 
     /**
@@ -41,8 +43,24 @@ class SocketCommand extends Command
     {
         $this->info('Trying to start websocket server...');
         // initialize swoole server
-        $this->server = app('websocket')->server;
+        $this->init();
+        // bind listen functions
+        $this->register();
         // start server
         $this->server->start();
+    }
+
+    public function init()
+    {
+        $this->websocket = app('websocket');
+        $this->server = app('websocket')->server;
+    }
+
+    public function register()
+    {
+        $this->server->on('start', [$this->websocket, 'onStart']);
+        $this->server->on('open', [$this->websocket, 'onOpen']);
+        $this->server->on('message', [$this->websocket, 'onMessage']);
+        $this->server->on('close', [$this->websocket, 'onClose']);
     }
 }

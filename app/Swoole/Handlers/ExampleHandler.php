@@ -2,11 +2,16 @@
 
 namespace App\Swoole\Handlers;
 
-class ExampleHandler
+class ExampleHandler extends BaseHandler
 {
+    public function __construct()
+    {
+        //
+    }
+
     public function index($server, $data, $fd)
     {
-        $server->push($fd, json_encode($server));
+        $this->broadcast($server, 'test');
         app('output')->writeln('push succeed');
     }
 }
