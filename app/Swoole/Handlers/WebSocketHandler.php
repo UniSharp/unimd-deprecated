@@ -9,10 +9,14 @@ class WebSocketHandler extends BaseHandler
 {
     protected $dispatchers;
     protected $sessionMiddleware;
+    protected $heartbeatInterval;
+    protected $heartbeatPush;
 
     public function __construct() {
         $this->dispatchers = config('swoole.dispatchers');
         $this->sessionMiddleware = app()->make(StartSession::class);
+        $this->heartbeatInterval = config('swoole.settings.heartbeat_check_interval') * 1000;
+        $this->heartbeatPush = config('swoole.websocket.heartbeat_push');
     }
 
     public function onStart(Server $server) {
@@ -20,13 +24,12 @@ class WebSocketHandler extends BaseHandler
     }
 
     public function onWorkerStart(Server $server) {
-        // check heartbeat
-        $interval = config('swoole.settings.heartbeat_check_interval') * 1000;
-        $server->tick($interval, function ($id) use ($server) {
-            foreach($server->connections as $fd){
-                $server->push($fd, 0, 0x9);
-            }
-        });
+        // server push heartbeat
+        if ($this->heartbeatPush && $server->worker_id === 0) {
+            $server->tick($this->heartbeatInterval, function ($id) use ($server) {
+                $this->heartbeat($server);
+             });
+        }
     }
 
     public function onOpen(Server $server, $request) {

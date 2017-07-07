@@ -11,13 +11,18 @@ class BaseHandler
         //
     }
 
-    protected function broadcast($server, $message, $sender = null)
+    protected function broadcast($server, $message, $sender = null, $opcode = 1)
     {
         foreach($server->connections as $fd) {
             if ($sender !== $fd) {
-                $server->push($fd, $message);
+                $server->push($fd, $message, $opcode);
             }
         }
+    }
+
+    protected function heartbeat($server)
+    {
+        $this->broadcast($server, 0, null, 0x9);
     }
 
     protected function decryptCookies($cookies = [])
