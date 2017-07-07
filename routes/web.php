@@ -11,14 +11,23 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/websocket', function () {
-    return view('websocket');
-});
-
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', function () {
+    return redirect()->route('home');
+});
+
+Route::group(['middleware' => 'auth'], function () {
+    // home
+    Route::get('/home', 'HomeController@index')->name('home');
+    // test websocket
+    Route::get('/websocket', function () {
+        return view('websocket');
+    });
+    // notes
+    Route::group(['prefix' => 'note', 'as' => 'note.'], function () {
+        Route::get('/', ['uses' => 'NoteController@index', 'as' => 'index']);
+        Route::get('/new', ['uses' => 'NoteController@create', 'as' => 'create']);
+        Route::get('{note}/edit', ['uses' => 'NoteController@edit', 'as' => 'edit']);
+    });
+});
