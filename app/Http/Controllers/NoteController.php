@@ -63,7 +63,7 @@ class NoteController extends Controller
      */
     public function edit(Note $note)
     {
-        dd($note->author);
+        return view('note', compact('note'));
     }
 
     /**

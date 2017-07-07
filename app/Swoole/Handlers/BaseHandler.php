@@ -11,10 +11,12 @@ class BaseHandler
         //
     }
 
-    protected function broadcast($server, $message)
+    protected function broadcast($server, $message, $sender = null)
     {
         foreach($server->connections as $fd) {
-            $server->push($fd, $message);
+            if ($sender !== $fd) {
+                $server->push($fd, $message);
+            }
         }
     }
 
