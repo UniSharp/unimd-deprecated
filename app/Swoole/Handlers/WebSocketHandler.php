@@ -2,7 +2,6 @@
 
 namespace App\Swoole\Handlers;
 
-use Symfony\Component\Console\Output\ConsoleOutput;
 use Swoole\WebSocket\Server;
 use Illuminate\Session\Middleware\StartSession;
 
@@ -37,7 +36,7 @@ class WebSocketHandler extends BaseHandler
         $request = $this->sessionMiddleware->handle($request, function ($pipe) {
             return response('');
         });
-        // app('output')->writeln(json_encode(auth()->user()));
+        // app('output')->writeln(json_encode(auth()->guard('websocket')->user()));
     }
 
     public function onMessage(Server $server, $frame) {

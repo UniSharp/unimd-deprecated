@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Auth\EloquentUserProvider;
+use App\Swoole\Auth\Guards\WebsocketGuard;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -25,6 +27,9 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        \Auth::extend('websocket', function ($app) {
+            $provider = new EloquentUserProvider($app['hash'], config('auth.providers.users.model'));
+            return new WebsocketGuard('web', $provider, app()->make('session.store'), request());
+        });
     }
 }

@@ -45,6 +45,11 @@ return [
             'driver' => 'token',
             'provider' => 'users',
         ],
+
+        'websocket' => [
+            'driver' => 'websocket',
+            'provider' => 'users',
+        ],
     ],
 
     /*
