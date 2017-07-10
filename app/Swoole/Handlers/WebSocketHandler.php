@@ -46,6 +46,7 @@ class WebSocketHandler extends BaseHandler
         // decode message
         $data = json_decode($frame->data);
 
+        // filter illegal actions
         if (!isset($data->action)) {
             app('output')->writeln("illegal request from client-{$frame->fd} has been denied");
             return false;
@@ -58,6 +59,23 @@ class WebSocketHandler extends BaseHandler
         // dispatch by action
         $fd = $frame->fd;
         app()->call($this->dispatchers[$action], compact('server', 'data', 'fd'));
+    }
+
+    public function onTask(Server $server, $task_id, $from_id, $data)
+    {
+        // filter illegal actions
+        $action = trim($data['action']);
+        if (!array_key_exists($action, $this->dispatchers)) {
+            app('output')->writeln("illegal task action `{$action}` from client-{$frame->fd} has been denied");
+            return false;
+        }
+        // dispatch by action
+        app()->call($this->dispatchers[$action], compact('server', 'data', 'task_id', 'from_id'));
+    }
+
+    public function onFinish(Server $server, $task_id, $data)
+    {
+        // taskworker callback
     }
 
     public function onClose(Server $server, $fd) {

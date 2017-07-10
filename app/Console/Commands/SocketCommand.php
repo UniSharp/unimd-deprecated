@@ -62,6 +62,8 @@ class SocketCommand extends Command
         $this->server->on('workerstart', [$this->handler, 'onWorkerStart']);
         $this->server->on('open', [$this->handler, 'onOpen']);
         $this->server->on('message', [$this->handler, 'onMessage']);
+        $this->server->on('task', [$this->handler, 'onTask']);
+        $this->server->on('finish', [$this->handler, 'onFinish']);
         $this->server->on('close', [$this->handler, 'onClose']);
     }
 }

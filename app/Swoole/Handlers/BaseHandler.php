@@ -13,11 +13,14 @@ class BaseHandler
 
     protected function broadcast($server, $message, $sender = null, $opcode = 1)
     {
-        foreach($server->connections as $fd) {
-            if ($sender !== $fd) {
-                $server->push($fd, $message, $opcode);
-            }
-        }
+        $server->task([
+            'action' => 'broadcast',
+            'data' => $message,
+            'options' => [
+                'sender' => $sender,
+                'opcode' => $opcode
+            ]
+        ]);
     }
 
     protected function heartbeat($server)

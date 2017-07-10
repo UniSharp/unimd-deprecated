@@ -10,9 +10,10 @@ return [
     'settings' => [
         'heartbeat_check_interval' => env('WS_HARTBEAT_INTERVAL', 10),
         'heartbeat_idle_time' => env('WS_HARTBEAT_IDLE', 20),
+        'task_worker_num' => env('WS_TASKWORKER_NUMBER', 4),
     ],
     'dispatchers' => [
-        'action' => 'App\Swoole\Handlers\ExampleHandler@index',
+        'broadcast' => 'App\Swoole\Handlers\Task\PushHandler@broadcast',
         'chat' => 'App\Swoole\Handlers\ExampleHandler@chat',
         'changeNote' => 'App\Swoole\Handlers\NoteHandler@changeNote',
     ]
