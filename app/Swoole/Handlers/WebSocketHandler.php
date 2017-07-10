@@ -15,7 +15,7 @@ class WebSocketHandler extends BaseHandler
     public function __construct() {
         $this->dispatchers = config('swoole.dispatchers');
         $this->sessionMiddleware = app()->make(StartSession::class);
-        $this->heartbeatInterval = config('swoole.settings.heartbeat_check_interval') * 1000;
+        $this->heartbeatInterval = config('swoole.websocket.heartbeat_server_interval') * 1000;
         $this->heartbeatPush = config('swoole.websocket.heartbeat_push');
     }
 
