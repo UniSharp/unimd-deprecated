@@ -33,13 +33,17 @@ class WebSocketHandler extends BaseHandler
     }
 
     public function onOpen(Server $server, $request) {
-        app('output')->writeln("server: handshake succeeed with client-{$request->fd}");
-        // auth user
+        $fd = $request->fd;
+        app('output')->writeln("server: handshake succeeed with client-{$fd}");
+        // tranform request
         $request = $this->makeRequest($request);
         $request = $this->sessionMiddleware->handle($request, function ($pipe) {
             return response('');
         });
-        // app('output')->writeln(json_encode(auth()->guard('websocket')->user()));
+        // auth user
+        $user = auth()->guard('websocket')->user();
+        $this->users->set($fd, ['id' => $user->id, 'name' => $user->name]);
+        app('output')->writeln("user `{$user->name}`(id: {$user->id}) authenticated");
     }
 
     public function onMessage(Server $server, $frame) {
@@ -80,5 +84,7 @@ class WebSocketHandler extends BaseHandler
 
     public function onClose(Server $server, $fd) {
         app('output')->writeln("client-{$fd} is closed");
+        // remove user from online users
+        $this->users->del($fd);
     }
 }

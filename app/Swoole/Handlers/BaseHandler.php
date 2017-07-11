@@ -3,12 +3,23 @@
 namespace App\Swoole\Handlers;
 
 use Illuminate\Http\Request;
+use Swoole\Table;
 
 class BaseHandler
 {
+    protected $users;
+
     public function __contruct()
     {
         //
+    }
+
+    public function initUsers()
+    {
+        $this->users = new Table(config('swoole.websocket.max_online_users'));
+        $this->users->column('id', Table::TYPE_INT, 4);
+        $this->users->column('name', Table::TYPE_STRING, 64);
+        $this->users->create();
     }
 
     protected function broadcast($server, $message, $sender = null, $opcode = 1)

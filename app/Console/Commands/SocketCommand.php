@@ -54,6 +54,7 @@ class SocketCommand extends Command
     {
         $this->handler = app()->make(WebSocketHandler::class);
         $this->server = app('websocket');
+        $this->handler->initUsers();
     }
 
     public function register()
