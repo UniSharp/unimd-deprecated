@@ -9,8 +9,8 @@ return [
         'max_online_users' => env('WS_MAX_ONLINE_USERS', 2048)
     ],
     'settings' => [
-        'heartbeat_check_interval' => env('WS_HARTBEAT_INTERVAL', 10),
-        'heartbeat_idle_time' => env('WS_HARTBEAT_IDLE', 20),
+        'heartbeat_check_interval' => env('WS_HARTBEAT_INTERVAL', 60),
+        'heartbeat_idle_time' => env('WS_HARTBEAT_IDLE', 120),
         'task_worker_num' => env('WS_TASKWORKER_NUMBER', 4),
     ],
     'dispatchers' => [
