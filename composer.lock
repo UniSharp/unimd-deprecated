@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "cd400b5a8328ab01ee0c81131d3fccb5",
-    "content-hash": "86b2f5f78b3238b0495e2dca58c16f57",
+    "hash": "de89ec9868f96a02c9150e8e18baff50",
+    "content-hash": "0b52c14e250aa32e05b69b2daf66787f",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -634,48 +634,6 @@
             "time": "2017-01-23 04:29:33"
         },
         {
-            "name": "myqee/server",
-            "version": "v1.0.6",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/myqee/server.git",
-                "reference": "b92f5db385dd7c90dbec922d1a16a3005ae7ff87"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/myqee/server/zipball/b92f5db385dd7c90dbec922d1a16a3005ae7ff87",
-                "reference": "b92f5db385dd7c90dbec922d1a16a3005ae7ff87",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.5.0"
-            },
-            "bin": [
-                "bin/register-server",
-                "bin/remote-shell",
-                "bin/task-server"
-            ],
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "MyQEE\\Server\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "jonwang",
-                    "email": "jonwang@queyang.com"
-                }
-            ],
-            "description": "MyQEE Server library",
-            "homepage": "http://www.myqee.com",
-            "time": "2017-05-24 04:24:35"
-        },
-        {
             "name": "nesbot/carbon",
             "version": "1.22.1",
             "source": {
@@ -826,6 +784,56 @@
                 "random"
             ],
             "time": "2017-03-13 16:27:32"
+        },
+        {
+            "name": "predis/predis",
+            "version": "v1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nrk/predis.git",
+                "reference": "f0210e38881631afeafb56ab43405a92cafd9fd1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nrk/predis/zipball/f0210e38881631afeafb56ab43405a92cafd9fd1",
+                "reference": "f0210e38881631afeafb56ab43405a92cafd9fd1",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.9"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.8"
+            },
+            "suggest": {
+                "ext-curl": "Allows access to Webdis when paired with phpiredis",
+                "ext-phpiredis": "Allows faster serialization and deserialization of the Redis protocol"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Predis\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Daniele Alessandri",
+                    "email": "suppakilla@gmail.com",
+                    "homepage": "http://clorophilla.net"
+                }
+            ],
+            "description": "Flexible and feature-complete Redis client for PHP and HHVM",
+            "homepage": "http://github.com/nrk/predis",
+            "keywords": [
+                "nosql",
+                "predis",
+                "redis"
+            ],
+            "time": "2016-06-16 16:22:20"
         },
         {
             "name": "psr/log",
