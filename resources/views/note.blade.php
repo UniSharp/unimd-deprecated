@@ -27,7 +27,7 @@
       mode: 'markdown'
     })
     var replaceRange = diff => editor.replaceRange(diff.text, diff.from, diff.to)
-    editor.on('change', (editor, diff) => diff.origin && changeSend(diff))
+    editor.on('change', (editor, diff) => diff.origin && (diff.origin !== 'setValue') && changeSend(diff))
 
     socket.onopen = function(ev) {
         console.log('connected');
