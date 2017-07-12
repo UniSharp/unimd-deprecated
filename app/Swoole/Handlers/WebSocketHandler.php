@@ -34,7 +34,7 @@ class WebSocketHandler extends BaseHandler
         if ($this->heartbeatPush && $server->worker_id === 0) {
             $server->tick($this->heartbeatInterval, function ($id) use ($server) {
                 $this->heartbeat($server);
-             });
+            });
         }
     }
 
