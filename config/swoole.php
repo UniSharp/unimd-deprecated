@@ -18,7 +18,7 @@ return [
         'joinRoom' => 'App\Swoole\Handlers\Task\RoomHandler@join',
         'exitRoom' => 'App\Swoole\Handlers\Task\RoomHandler@exit',
         'chat' => 'App\Swoole\Handlers\ExampleHandler@chat',
-        'getNote' => 'App\Swoole\Handlers\NoteHandler@getNote',
-        'changeNote' => 'App\Swoole\Handlers\NoteHandler@changeNote',
+        'getNote' => 'App\Swoole\Handlers\NoteHandler@get',
+        'changeNote' => 'App\Swoole\Handlers\NoteHandler@change',
     ]
 ];

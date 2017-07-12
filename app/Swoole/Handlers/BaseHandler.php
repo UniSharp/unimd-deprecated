@@ -4,6 +4,8 @@ namespace App\Swoole\Handlers;
 
 use Swoole\WebSocket\Server;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redis;
+use App\Swoole\Handlers\Task\RoomHandler;
 
 class BaseHandler
 {
@@ -71,5 +73,13 @@ class BaseHandler
                 'fd' => $fd
             ]
         ]);
+    }
+
+    protected function cleanRooms()
+    {
+        $keys = Redis::keys(RoomHandler::PREFIX . '*');
+        if (count($keys) > 0) {
+            Redis::del($keys);
+        }
     }
 }

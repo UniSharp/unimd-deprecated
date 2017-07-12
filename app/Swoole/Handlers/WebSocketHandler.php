@@ -24,6 +24,8 @@ class WebSocketHandler extends BaseHandler
     public function onStart(Server $server)
     {
         app('output')->writeln("websocket server started: <ws://{$server->host}:$server->port>");
+        // clean rooms while unexpected server shutdown
+        $this->cleanRooms($server);
     }
 
     public function onWorkerStart(Server $server)
