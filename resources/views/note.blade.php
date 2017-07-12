@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="editor">
-                <textarea id="editor">{{$note->content}}</textarea>
+                <textarea id="editor"></textarea>
             </div>
         </div>
     </div>
@@ -31,6 +31,7 @@
 
     socket.onopen = function(ev) {
         console.log('connected');
+        getNote("{{$note->id}}");
     }
 
     socket.onclose = function(ev) {
@@ -42,8 +43,21 @@
     }
 
     socket.onmessage = function(ev) {
-        replaceRange(JSON.parse(ev.data));
+        var data = JSON.parse(ev.data);
+        if (data.action === 'changeNote') {
+            replaceRange(data.message);
+        } else if (data.action === 'getNote') {
+            editor.getDoc().setValue(data.message);
+        }
         console.log('message: ' + ev.data);
+    }
+
+    function getNote($note_id) {
+        var msg = {
+            action: 'getNote',
+            note_id : $note_id
+        };
+        socket.send(JSON.stringify(msg));
     }
 
     function changeSend(diff) {

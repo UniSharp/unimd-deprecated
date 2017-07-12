@@ -2,39 +2,29 @@
 
 namespace App\Swoole\Handlers;
 
+use Swoole\WebSocket\Server;
 use Illuminate\Http\Request;
-use Swoole\Table;
 
 class BaseHandler
 {
-    protected $users;
-
     public function __contruct()
     {
         //
     }
 
-    public function initUsers()
-    {
-        $this->users = new Table(config('swoole.websocket.max_online_users'));
-        $this->users->column('id', Table::TYPE_INT, 4);
-        $this->users->column('name', Table::TYPE_STRING, 64);
-        $this->users->create();
-    }
-
-    protected function broadcast($server, $message, $sender = null, $opcode = 1)
+    protected function broadcast(Server $server, $message, $sender = null, $opcode = 1)
     {
         $server->task([
             'action' => 'broadcast',
-            'data' => $message,
-            'options' => [
+            'data' => [
+                'message' => $message,
                 'sender' => $sender,
                 'opcode' => $opcode
             ]
         ]);
     }
 
-    protected function heartbeat($server)
+    protected function heartbeat(Server $server)
     {
         $this->broadcast($server, 0, null, 0x9);
     }
@@ -59,5 +49,27 @@ class BaseHandler
             $server = $request->server,
             $content = ''
         );
+    }
+
+    protected function joinRoom(Server $server, $room_id, $fd)
+    {
+        $server->task([
+            'action' => 'joinRoom',
+            'data' => [
+                'room_id' => $room_id,
+                'fd' => $fd
+            ]
+        ]);
+    }
+
+    protected function exitRoom(Server $server, $room_id, $fd)
+    {
+        $server->task([
+            'action' => 'exitRoom',
+            'data' => [
+                'room_id' => $room_id,
+                'fd' => $fd
+            ]
+        ]);
     }
 }

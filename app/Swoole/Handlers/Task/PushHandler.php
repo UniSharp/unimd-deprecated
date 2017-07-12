@@ -14,8 +14,8 @@ class PushHandler
     public function broadcast($server, $data)
     {
         foreach($server->connections as $fd) {
-            if ($data['options']['sender'] !== $fd) {
-                $server->push($fd, $data['data'], $data['options']['opcode']);
+            if ($data['sender'] !== $fd) {
+                $server->push($fd, $data['message'], $data['opcode']);
             }
         }
     }

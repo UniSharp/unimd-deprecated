@@ -2,6 +2,8 @@
 
 namespace App\Swoole\Handlers;
 
+use App\Note;
+
 class NoteHandler extends BaseHandler
 {
     public function __construct()
@@ -9,8 +11,28 @@ class NoteHandler extends BaseHandler
         //
     }
 
+    public function getNote($server, $data, $fd)
+    {
+        // write room id to users table
+        app('swoole.table')->users->set($fd, [
+            'room_id' => $data->note_id
+        ]);
+        $note = Note::find($data->note_id);
+        $result = [
+            'action' => 'getNote',
+            'message' => $note->content
+        ];
+        $this->joinRoom($server, $data->note_id, $fd);
+
+        $server->push($fd, json_encode($result));
+    }
+
     public function changeNote($server, $data, $fd)
     {
-        $this->broadcast($server, json_encode($data->message), $fd);
+        $data = [
+            'action' => 'changeNote',
+            'message' => $data->message
+        ];
+        $this->broadcast($server, json_encode($data), $fd);
     }
 }

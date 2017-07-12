@@ -4,6 +4,7 @@ namespace App\Swoole\Handlers;
 
 use Swoole\WebSocket\Server;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Facades\Redis;
 
 class WebSocketHandler extends BaseHandler
 {
@@ -12,18 +13,21 @@ class WebSocketHandler extends BaseHandler
     protected $heartbeatInterval;
     protected $heartbeatPush;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->dispatchers = config('swoole.dispatchers');
         $this->sessionMiddleware = app()->make(StartSession::class);
         $this->heartbeatInterval = config('swoole.websocket.heartbeat_server_interval') * 1000;
         $this->heartbeatPush = config('swoole.websocket.heartbeat_push');
     }
 
-    public function onStart(Server $server) {
+    public function onStart(Server $server)
+    {
         app('output')->writeln("websocket server started: <ws://{$server->host}:$server->port>");
     }
 
-    public function onWorkerStart(Server $server) {
+    public function onWorkerStart(Server $server)
+    {
         // server push heartbeat
         if ($this->heartbeatPush && $server->worker_id === 0) {
             $server->tick($this->heartbeatInterval, function ($id) use ($server) {
@@ -32,7 +36,8 @@ class WebSocketHandler extends BaseHandler
         }
     }
 
-    public function onOpen(Server $server, $request) {
+    public function onOpen(Server $server, $request)
+    {
         $fd = $request->fd;
         app('output')->writeln("server: handshake succeeed with client-{$fd}");
         // tranform request
@@ -42,11 +47,12 @@ class WebSocketHandler extends BaseHandler
         });
         // auth user
         $user = auth()->guard('websocket')->user();
-        $this->users->set($fd, ['id' => $user->id, 'name' => $user->name]);
+        app('swoole.table')->users->set($fd, ['id' => $user->id, 'name' => $user->name]);
         app('output')->writeln("user `{$user->name}`(id: {$user->id}) authenticated");
     }
 
-    public function onMessage(Server $server, $frame) {
+    public function onMessage(Server $server, $frame)
+    {
         // decode message
         $data = json_decode($frame->data);
 
@@ -74,6 +80,7 @@ class WebSocketHandler extends BaseHandler
             return false;
         }
         // dispatch by action
+        $data = $data['data'];
         app()->call($this->dispatchers[$action], compact('server', 'data', 'task_id', 'from_id'));
     }
 
@@ -82,9 +89,13 @@ class WebSocketHandler extends BaseHandler
         // taskworker callback
     }
 
-    public function onClose(Server $server, $fd) {
+    public function onClose(Server $server, $fd)
+    {
         app('output')->writeln("client-{$fd} is closed");
+        // remove user from room
+        $user = app('swoole.table')->users->get($fd);
+        $this->exitRoom($server, $user['room_id'], $fd);
         // remove user from online users
-        $this->users->del($fd);
+        app('swoole.table')->users->del($fd);
     }
 }

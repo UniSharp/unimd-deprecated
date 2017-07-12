@@ -15,7 +15,10 @@ return [
     ],
     'dispatchers' => [
         'broadcast' => 'App\Swoole\Handlers\Task\PushHandler@broadcast',
+        'joinRoom' => 'App\Swoole\Handlers\Task\RoomHandler@join',
+        'exitRoom' => 'App\Swoole\Handlers\Task\RoomHandler@exit',
         'chat' => 'App\Swoole\Handlers\ExampleHandler@chat',
+        'getNote' => 'App\Swoole\Handlers\NoteHandler@getNote',
         'changeNote' => 'App\Swoole\Handlers\NoteHandler@changeNote',
     ]
 ];
