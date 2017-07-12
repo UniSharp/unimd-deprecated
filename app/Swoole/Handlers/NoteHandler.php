@@ -13,7 +13,7 @@ class NoteHandler extends BaseHandler
 
     public function getNote($server, $data, $fd)
     {
-        // write room id to users table
+        // cache room_id to swoole table
         app('swoole.table')->users->set($fd, [
             'room_id' => $data->note_id
         ]);
