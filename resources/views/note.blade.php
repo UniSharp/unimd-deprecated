@@ -35,9 +35,9 @@
     var replaceRange = diff => editor.replaceRange(diff.text, diff.from, diff.to)
     editor.on('change', function(editor, diff) {
         if (diff.origin && (diff.origin !== 'setValue')) {
-            changeSend(diff, note_id);
+            changeSend(diff);
             newDiff = dmp.patch_toText(dmp.patch_make(content, editor.getDoc().getValue()));
-            diffSend(newDiff, note_id);
+            diffSend(newDiff);
         }
         // console.log(diff);
     })
@@ -77,19 +77,17 @@
         socket.send(JSON.stringify(msg));
     }
 
-    function changeSend(diff, note_id) {
+    function changeSend(diff) {
         var msg = {
             action: 'changeNote',
-            note_id: note_id,
             message: diff
         };
         socket.send(JSON.stringify(msg));
     }
 
-    function diffSend(diff, note_id) {
+    function diffSend(diff) {
         var msg = {
             action: 'diffNote',
-            note_id: note_id,
             message: diff
         };
         socket.send(JSON.stringify(msg));

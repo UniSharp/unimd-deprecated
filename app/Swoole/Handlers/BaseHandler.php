@@ -84,8 +84,9 @@ class BaseHandler
         }
     }
 
-    protected function syncDiff($server, $fd, $note_id)
+    protected function syncDiff($server, $fd)
     {
+        $note_id = app('swoole.table')->users->get($fd)['room_id'];
         $diff = app('swoole.table')->diffs->get($note_id);
         $diffResult = [
             'action' => 'getDiff',

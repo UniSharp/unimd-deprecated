@@ -19,6 +19,10 @@ class NoteHandler extends BaseHandler
         ]);
         // get note
         $note = Note::find($data->note_id);
+        if (!$note) {
+            // note not found
+            return false;
+        }
         $noteResult = [
             'action' => 'getNote',
             'message' => $note->content
@@ -33,17 +37,19 @@ class NoteHandler extends BaseHandler
 
     public function change($server, $data, $fd)
     {
+        $room_id = app('swoole.table')->users->get($fd)['room_id'];
         $result = [
             'action' => 'changeNote',
             'message' => $data->message
         ];
-        $this->broadcast($server, $data->note_id, json_encode($result), $fd);
+        $this->broadcast($server, $room_id, json_encode($result), $fd);
     }
 
     public function diff($server, $data, $fd)
     {
         // cache note diff to swoole table
-        app('swoole.table')->diffs->set($data->note_id, [
+        $room_id = app('swoole.table')->users->get($fd)['room_id'];
+        app('swoole.table')->diffs->set($room_id, [
             'id' => $fd,
             'content' => $data->message
         ]);
