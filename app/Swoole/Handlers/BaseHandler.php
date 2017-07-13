@@ -47,7 +47,7 @@ class BaseHandler
             $uri = '/',
             $method = 'get',
             $parameters = [],
-            $cookies = $this->decryptCookies($request->cookie) ?? [],
+            $cookies = isset($request->cookie) ? $this->decryptCookies($request->cookie) : [],
             $files = [],
             $server = $request->server,
             $content = ''
