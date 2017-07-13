@@ -22,7 +22,6 @@
 
 <script type="text/javascript">
     var wsUri = "{{env('WS_URI') ?: 'ws://'.config('swoole.websocket.server').':'.config('swoole.websocket.port')}}"
-    // var wsUri = "ws://{{config('swoole.websocket.server')}}:{{config('swoole.websocket.port')}}";
     var socket = new WebSocket(wsUri);
     var note_id = "{{$note->id}}";
 
