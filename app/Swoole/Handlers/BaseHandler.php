@@ -82,4 +82,14 @@ class BaseHandler
             Redis::del($keys);
         }
     }
+
+    protected function syncDiff($server, $fd, $note_id)
+    {
+        $diff = app('swoole.table')->diffs->get($note_id);
+        $diffResult = [
+            'action' => 'getDiff',
+            'message' => $diff['content']
+        ];
+        $server->push($fd, json_encode($diffResult));
+    }
 }

@@ -9,6 +9,7 @@ class SocketCommand extends Command
 {
     protected $handler;
     protected $server;
+    protected $table;
 
     /**
      * The name and signature of the console command.
@@ -54,6 +55,7 @@ class SocketCommand extends Command
     {
         $this->handler = app()->make(WebSocketHandler::class);
         $this->server = app('websocket');
+        $this->table = app('swoole.table');
     }
 
     public function register()

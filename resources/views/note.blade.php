@@ -17,21 +17,34 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.0.0/codemirror.min.js"></script>>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.0.0/mode/markdown/markdown.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.5.0/lodash.min.js"></script>
+<script src="https://neil.fraser.name/software/diff_match_patch/svn/trunk/javascript/diff_match_patch.js"></script>
+<script src="https://codemirror.net/addon/merge/merge.js"></script>
 
 <script type="text/javascript">
     var wsUri = "ws://{{config('swoole.websocket.server')}}:{{config('swoole.websocket.port')}}";
     var socket = new WebSocket(wsUri);
+    var note_id = "{{$note->id}}";
 
     var editor = CodeMirror.fromTextArea(document.querySelector('#editor'), {
       lineNumbers: true,
       mode: 'markdown'
     })
+    var dmp = new diff_match_patch();
+    var content = '';
+    var diff = '';
     var replaceRange = diff => editor.replaceRange(diff.text, diff.from, diff.to)
-    editor.on('change', (editor, diff) => diff.origin && (diff.origin !== 'setValue') && changeSend(diff))
+    editor.on('change', function(editor, diff) {
+        if (diff.origin && (diff.origin !== 'setValue')) {
+            changeSend(diff);
+            newDiff = dmp.patch_toText(dmp.patch_make(content, editor.getDoc().getValue()));
+            diffSend(newDiff);
+        }
+        // console.log(diff);
+    })
 
     socket.onopen = function(ev) {
         console.log('connected');
-        getNote("{{$note->id}}");
+        getNote(note_id);
     }
 
     socket.onclose = function(ev) {
@@ -47,7 +60,12 @@
         if (data.action === 'changeNote') {
             replaceRange(data.message);
         } else if (data.action === 'getNote') {
-            editor.getDoc().setValue(data.message);
+            content = data.message;
+            editor.getDoc().setValue(content);
+        } else if (data.action === 'getDiff') {
+            var patch = dmp.patch_fromText(data.message);
+            var apply = dmp.patch_apply(patch, editor.getDoc().getValue());
+            editor.getDoc().setValue(apply[0])
         }
         console.log('message: ' + ev.data);
     }
@@ -63,6 +81,15 @@
     function changeSend(diff) {
         var msg = {
             action: 'changeNote',
+            message: diff
+        };
+        socket.send(JSON.stringify(msg));
+    }
+
+    function diffSend(diff) {
+        var msg = {
+            action: 'diffNote',
+            note_id: note_id,
             message: diff
         };
         socket.send(JSON.stringify(msg));

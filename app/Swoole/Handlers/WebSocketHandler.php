@@ -89,7 +89,7 @@ class WebSocketHandler extends BaseHandler
 
     public function onFinish(Server $server, $task_id, $data)
     {
-        // taskworker callback
+        // task worker callback
     }
 
     public function onClose(Server $server, $fd)

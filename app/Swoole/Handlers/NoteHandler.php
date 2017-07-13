@@ -19,14 +19,16 @@ class NoteHandler extends BaseHandler
         ]);
         // get note
         $note = Note::find($data->note_id);
-        $result = [
+        $noteResult = [
             'action' => 'getNote',
             'message' => $note->content
         ];
-        // put user's fd to note room
+        // put user fd to note room
         $this->joinRoom($server, $data->note_id, $fd);
-
-        $server->push($fd, json_encode($result));
+        // return note
+        $server->push($fd, json_encode($noteResult));
+        // sync online diffs
+        $this->syncDiff($server, $fd, $data->note_id);
     }
 
     public function change($server, $data, $fd)
@@ -36,5 +38,14 @@ class NoteHandler extends BaseHandler
             'message' => $data->message
         ];
         $this->broadcast($server, json_encode($data), $fd);
+    }
+
+    public function diff($server, $data, $fd)
+    {
+        // cache note diff to swoole table
+        app('swoole.table')->diffs->set($data->note_id, [
+            'id' => $fd,
+            'content' => $data->message
+        ]);
     }
 }
