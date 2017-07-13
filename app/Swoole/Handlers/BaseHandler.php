@@ -6,6 +6,7 @@ use Swoole\WebSocket\Server;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 use App\Swoole\Handlers\Task\RoomHandler;
+use Illuminate\Contracts\Encryption\DecryptException;
 
 class BaseHandler
 {
@@ -43,11 +44,18 @@ class BaseHandler
 
     protected function makeRequest(\Swoole\Http\Request $request)
     {
+        // decrypt laravel cookies
+        try {
+            $laravelCookies = $this->decryptCookies($request->cookie ?? []);
+        } catch (DecryptException $e) {
+            //
+        }
+
         return Request::create(
             $uri = '/',
             $method = 'get',
             $parameters = [],
-            $cookies = isset($request->cookie) ? $this->decryptCookies($request->cookie) : [],
+            $cookies = $laravelCookies,
             $files = [],
             $server = $request->server,
             $content = ''
