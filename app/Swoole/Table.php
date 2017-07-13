@@ -27,7 +27,7 @@ class Table
     protected function initDiffs()
     {
         $this->diffs = new SwooleTable(config('swoole.websocket.max_online_notes'));
-        $this->diffs->column('content', SwooleTable::TYPE_STRING, 16384);
+        $this->diffs->column('content', SwooleTable::TYPE_STRING, 131072);
         $this->diffs->create();
     }
 }
