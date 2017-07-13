@@ -20,10 +20,6 @@ Route::get('/', function () {
 Route::group(['middleware' => 'auth'], function () {
     // home
     Route::get('/home', 'HomeController@index')->name('home');
-    // test websocket
-    Route::get('/websocket', function () {
-        return view('websocket');
-    });
     // notes
     Route::group(['prefix' => 'note', 'as' => 'note.'], function () {
         Route::get('/', ['uses' => 'NoteController@index', 'as' => 'index']);

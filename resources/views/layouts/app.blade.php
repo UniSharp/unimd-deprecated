@@ -64,9 +64,6 @@
 
                             <ul class="dropdown-menu" role="menu">
                                 <li>
-                                    <a href="/websocket">
-                                        Websocket test
-                                    </a>
                                     <a href="{{ route('note.create') }}">
                                         New note
                                     </a>
