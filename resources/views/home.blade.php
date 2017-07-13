@@ -8,7 +8,15 @@
                 <div class="panel-heading">Dashboard</div>
 
                 <div class="panel-body">
-                    You are logged in!
+                    @if(count($notes))
+                    <ul>
+                        @foreach($notes as $note)
+                        <li><a href="{{route('note.edit', $note->id)}}" target="_blank">Note {{$note->id}}</li>
+                        @endforeach
+                    </ul>
+                    @else
+                    There are no notes now.
+                    @endif
                 </div>
             </div>
         </div>
