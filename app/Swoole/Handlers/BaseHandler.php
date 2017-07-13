@@ -14,11 +14,12 @@ class BaseHandler
         //
     }
 
-    protected function broadcast(Server $server, $message, $sender = null, $opcode = 1)
+    protected function broadcast(Server $server, $room_id = null, $message, $sender = null, $opcode = 1)
     {
         $server->task([
             'action' => 'broadcast',
             'data' => [
+                'room_id' => $room_id,
                 'message' => $message,
                 'sender' => $sender,
                 'opcode' => $opcode
@@ -28,7 +29,7 @@ class BaseHandler
 
     protected function heartbeat(Server $server)
     {
-        $this->broadcast($server, 0, null, 0x9);
+        $this->broadcast($server, null, 0, null, 0x9);
     }
 
     protected function decryptCookies($cookies = [])
@@ -46,7 +47,7 @@ class BaseHandler
             $uri = '/',
             $method = 'get',
             $parameters = [],
-            $cookies = $this->decryptCookies($request->cookie),
+            $cookies = $this->decryptCookies($request->cookie) ?? [],
             $files = [],
             $server = $request->server,
             $content = ''

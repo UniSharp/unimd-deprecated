@@ -49,9 +49,11 @@ class WebSocketHandler extends BaseHandler
         });
         // auth user
         $user = auth()->guard('websocket')->user();
-        // cache user data to swoole table
-        app('swoole.table')->users->set($fd, ['id' => $user->id, 'name' => $user->name]);
-        app('output')->writeln("user `{$user->name}`(id: {$user->id}) authenticated");
+        if ($user) {
+            // cache user data to swoole table
+            app('swoole.table')->users->set($fd, ['id' => $user->id, 'name' => $user->name]);
+            app('output')->writeln("user `{$user->name}`(id: {$user->id}) authenticated"); 
+        }
     }
 
     public function onMessage(Server $server, $frame)
