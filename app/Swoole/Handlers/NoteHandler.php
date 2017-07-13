@@ -33,11 +33,11 @@ class NoteHandler extends BaseHandler
 
     public function change($server, $data, $fd)
     {
-        $data = [
+        $result = [
             'action' => 'changeNote',
             'message' => $data->message
         ];
-        $this->broadcast($server, json_encode($data), $fd);
+        $this->broadcast($server, $data->note_id, json_encode($result), $fd);
     }
 
     public function diff($server, $data, $fd)

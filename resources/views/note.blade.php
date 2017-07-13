@@ -35,9 +35,9 @@
     var replaceRange = diff => editor.replaceRange(diff.text, diff.from, diff.to)
     editor.on('change', function(editor, diff) {
         if (diff.origin && (diff.origin !== 'setValue')) {
-            changeSend(diff);
+            changeSend(diff, note_id);
             newDiff = dmp.patch_toText(dmp.patch_make(content, editor.getDoc().getValue()));
-            diffSend(newDiff);
+            diffSend(newDiff, note_id);
         }
         // console.log(diff);
     })
@@ -59,9 +59,8 @@
         var data = JSON.parse(ev.data);
         if (data.action === 'changeNote') {
             replaceRange(data.message);
-        } else if (data.action === 'getNote') {
-            content = data.message;
-            editor.getDoc().setValue(content);
+        } else if (data.action === 'getNote' && data.message !== null) {
+            editor.getDoc().setValue(data.message);
         } else if (data.action === 'getDiff') {
             var patch = dmp.patch_fromText(data.message);
             var apply = dmp.patch_apply(patch, editor.getDoc().getValue());
@@ -70,23 +69,24 @@
         console.log('message: ' + ev.data);
     }
 
-    function getNote($note_id) {
+    function getNote(note_id) {
         var msg = {
             action: 'getNote',
-            note_id : $note_id
+            note_id: note_id
         };
         socket.send(JSON.stringify(msg));
     }
 
-    function changeSend(diff) {
+    function changeSend(diff, note_id) {
         var msg = {
             action: 'changeNote',
+            note_id: note_id,
             message: diff
         };
         socket.send(JSON.stringify(msg));
     }
 
-    function diffSend(diff) {
+    function diffSend(diff, note_id) {
         var msg = {
             action: 'diffNote',
             note_id: note_id,
