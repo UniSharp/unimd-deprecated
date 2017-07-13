@@ -45,6 +45,7 @@ class BaseHandler
     protected function makeRequest(\Swoole\Http\Request $request)
     {
         // decrypt laravel cookies
+        $laravelCookies = [];
         try {
             $laravelCookies = $this->decryptCookies($request->cookie ?? []);
         } catch (DecryptException $e) {
@@ -55,7 +56,7 @@ class BaseHandler
             $uri = '/',
             $method = 'get',
             $parameters = [],
-            $cookies = $laravelCookies,
+            $laravelCookies,
             $files = [],
             $server = $request->server,
             $content = ''
