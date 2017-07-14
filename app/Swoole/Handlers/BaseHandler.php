@@ -45,7 +45,7 @@ class BaseHandler
     protected function makeRequest(\Swoole\Http\Request $request)
     {
         // decrypt laravel cookies
-        $laravelCookies = [];
+        $laravelCookies = collect($request->cookie ?? [])->only(['XSRF-TOKEN', 'laravel_session']);
         try {
             $laravelCookies = $this->decryptCookies($request->cookie ?? []);
         } catch (DecryptException $e) {
