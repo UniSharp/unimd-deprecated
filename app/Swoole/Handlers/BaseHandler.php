@@ -45,11 +45,13 @@ class BaseHandler
     protected function makeRequest(\Swoole\Http\Request $request)
     {
         // decrypt laravel cookies
-        $laravelCookies = collect($request->cookie ?? [])->only(['XSRF-TOKEN', 'laravel_session']);
+        $laravelCookies = collect($request->cookie ?? [])
+            ->only(['XSRF-TOKEN', 'laravel_session'])
+            ->toArray();
         try {
             $laravelCookies = $this->decryptCookies($request->cookie ?? []);
         } catch (DecryptException $e) {
-            //
+            app('output')->writeln('cookie decryption error');
         }
 
         return Request::create(
