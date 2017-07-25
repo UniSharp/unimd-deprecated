@@ -13,6 +13,10 @@
 
 Auth::routes();
 
+Route::get('/editor', function () {
+    return view('editor');
+});
+
 Route::get('/', function () {
     return redirect()->route('home');
 });

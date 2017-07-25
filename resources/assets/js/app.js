@@ -16,7 +16,10 @@ window.Vue = require('vue');
  */
 
 Vue.component('example', require('./components/Example.vue'));
+Vue.component('actionbar', require('./components/ActionBar.vue'));
+Vue.component('editor', require('./components/Editor.vue'));
+Vue.component('configbar', require('./components/ConfigBar.vue'));
 
 const app = new Vue({
-    el: '#app'
+    el: '#main'
 });
