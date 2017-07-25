@@ -1,19 +1,19 @@
 <template>
-  <div class="text-block">
-    123
-  </div>
+  <codemirror v-model="code" :options="{}"></codemirror>
 </template>
 
 <script>
   export default {
-    mounted() {
-      console.log('ok.')
+    data () {
+      return {
+        code: "123"
+      }
     }
   }
 </script>
 
 <style scoped>
-  .text-block {
+  .CodeMirror {
     height: calc(100vh - 50px - 2px - 20px);
     background-color: #444;
     color: white;
