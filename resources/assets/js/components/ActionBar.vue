@@ -40,7 +40,7 @@
             <li><a href="#"><i class="fa fa-file-pdf-o"></i> PDF (Beta)</a></li>
           </ul>
         </li>
-        <a href="#" class="btn btn-primary btn-sm navbar-btn" id="online-btn"><i class="fa fa-users"><strong> 1 ONLINE</strong></i></a>
+        <a href="#" class="btn btn-primary navbar-btn" id="online-btn"><i class="fa fa-users"></i> 1 ONLINE</a>
       </ul>
     </div><!-- /.container-fluid -->
   </nav>
@@ -59,6 +59,9 @@
     margin-bottom: 0px;
   }
   #online-btn {
+    margin-left: 20px;
     margin-right: 20px;
+    text-transform: uppercase;
+    font-weight: bold;
   }
 </style>

@@ -6,7 +6,7 @@
   export default {
     data () {
       return {
-        code: "123",
+        code: "Welcome to UniMD!\n\n## How we built this app:\n * Vue\n * Swoole\n * Laravel\n\n> Feel free to send pull requests!",
         editorOptions: {
           // codemirror options
           // tabSize: 4,
