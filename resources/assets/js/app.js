@@ -21,7 +21,7 @@ Vue.component('codemirror', codemirror);
 
 Vue.component('example', require('./components/Example.vue'));
 Vue.component('actionbar', require('./components/ActionBar.vue'));
-Vue.component('editor', require('./components/Editor.vue'));
+Vue.component('textblock', require('./components/TextBlock.vue'));
 Vue.component('configbar', require('./components/ConfigBar.vue'));
 
 const app = new Vue({

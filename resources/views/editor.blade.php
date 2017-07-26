@@ -2,6 +2,6 @@
 
 @section('content')
 <actionbar></actionbar>
-<editor></editor>
+<textblock></textblock>
 <configbar></configbar>
 @endsection
