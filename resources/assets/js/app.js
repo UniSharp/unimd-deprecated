@@ -22,7 +22,8 @@ Vue.component('example', require('./components/Example.vue'));
 Vue.component('codemirror', codemirror);
 
 Vue.component('editor', require('./components/Editor.vue'));
-Vue.component('modeswitcher', require('./components/ModeSwitcher.vue'));
+Vue.component('viewswitcher', require('./components/ViewSwitcher.vue'));
+Vue.component('keybinding', require('./components/KeyBinding.vue'));
 // Vue.component('actionbar', require('./components/ActionBar.vue'));
 // Vue.component('textblock', require('./components/TextBlock.vue'));
 // Vue.component('configbar', require('./components/ConfigBar.vue'));

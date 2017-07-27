@@ -9,7 +9,7 @@
             &nbsp;UniMD
           </a>
 
-          <modeswitcher v-model="viewMode" @change="showMode"></modeswitcher>
+          <viewswitcher v-model="viewMode" @change="showMode"></viewswitcher>
 
           <ul class="nav navbar-nav navbar-right">
             <li><a href="#"><i class="fa fa-question-circle"></i></a></li>
@@ -59,26 +59,17 @@
             <div class="config-item"><a href="#"><i class="fa fa-check"></i></a></div>
             <div class="config-item"><a href="#"><i class="fa fa-sun-o"></i></a></div>
             <div class="config-item">Tab Size: 4</div>
-            <div class="btn-group dropup config-item">
-              <a class="dropdown-toggle" data-toggle="dropdown">
-                Default
-              </a>
-              <ul class="dropdown-menu dropdown-menu-right">
-                <li><a href="#">Sublime</a></li>
-                <li><a href="#">Emacs</a></li>
-                <li><a href="#">Vim</a></li>
-                <li><a href="#">Default</a></li>
-              </ul>
-            </div>
+
+            <keybinding v-model="keyMode"></keybinding>
+
             <div class="config-item"><a href="#"><i class="fa fa-wrench"></i></a></div>
             <div class="config-item">Length: {{ chars_count }}</div>
           </div>
         </div>
         <!-- footer end -->
       </div>
-      <div id="view_block" :class="preview_width">
-        {{ code }}
-      </div>
+
+      <div id="view_block" :class="preview_width">{{ code }}</div>
     </section>
     <!-- body end -->
   </div>
@@ -90,9 +81,6 @@
       showMode() {
         console.log('Current mode : ' + this.viewMode)
       }
-    },
-    mounted() {
-      console.log('Editor mounted.')
     },
     computed: {
       text_width() {
@@ -117,13 +105,13 @@
         return this.code.length
       },
       lines_count() {
-        // var textarea = document.querySelector(".CodeMirror")[0];
         return this.code.split("\n").length;
       }
     },
     data() {
       return {
         viewMode: "edit",
+        keyMode: "default",
         code: "Welcome to UniMD!\n\n## How we built this app:\n * Vue\n * Swoole\n * Laravel\n\n> Feel free to send pull requests!",
         editorOptions: {
           // codemirror options
@@ -131,7 +119,7 @@
           mode: 'text/x-markdown',
           // theme: 'base16-dark',
           // // sublime、emacs、vim三种键位模式，支持你的不同操作习惯
-          // keyMap: "sublime",
+          keyMap: "default",
           // // 按键映射，比如Ctrl键映射autocomplete，autocomplete是hint代码提示事件
           // extraKeys: { "Ctrl": "autocomplete" },
           // // 代码折叠

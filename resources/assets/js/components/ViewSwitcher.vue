@@ -29,8 +29,7 @@
     },
     methods: {
       switchView(new_mode_name) {
-        this.$emit('input', new_mode_name)
-        this.$emit('change')
+        this.$emit('change').$emit('input', new_mode_name)
       }
     }
   }
