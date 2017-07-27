@@ -17,12 +17,15 @@ import { codemirror, CodeMirror } from 'vue-codemirror'
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+Vue.component('example', require('./components/Example.vue'));
+
 Vue.component('codemirror', codemirror);
 
-Vue.component('example', require('./components/Example.vue'));
-Vue.component('actionbar', require('./components/ActionBar.vue'));
-Vue.component('textblock', require('./components/TextBlock.vue'));
-Vue.component('configbar', require('./components/ConfigBar.vue'));
+Vue.component('editor', require('./components/Editor.vue'));
+Vue.component('modeswitcher', require('./components/ModeSwitcher.vue'));
+// Vue.component('actionbar', require('./components/ActionBar.vue'));
+// Vue.component('textblock', require('./components/TextBlock.vue'));
+// Vue.component('configbar', require('./components/ConfigBar.vue'));
 
 const app = new Vue({
     el: '#main'

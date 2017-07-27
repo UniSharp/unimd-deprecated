@@ -14,7 +14,7 @@
     <link href="http://musicbed.github.io/MirrorMark/css/mirrormark.css" rel="stylesheet" />
 
     <!-- Our demo CSS -->
-    <link href="http://musicbed.github.io/MirrorMark/css/demo.css" rel="stylesheet" />
+    {{-- <link href="http://musicbed.github.io/MirrorMark/css/demo.css" rel="stylesheet" /> --}}
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">

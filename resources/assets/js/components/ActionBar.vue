@@ -7,9 +7,9 @@
           &nbsp;UniMD
         </a>
         <div class="btn-group navbar-btn" role="group" aria-label="...">
-          <a class="btn btn-default"><i class="fa fa-eye"></i></a>
-          <a class="btn btn-default"><i class="fa fa-columns"></i></a>
-          <a class="btn btn-default"><i class="fa fa-pencil"></i></a>
+          <a class="btn btn-default" @click="switchView('view')"><i class="fa fa-eye"></i></a>
+          <a class="btn btn-default" @click="switchView('preview')"><i class="fa fa-columns"></i></a>
+          <a class="btn btn-default" @click="switchView('edit')"><i class="fa fa-pencil"></i></a>
         </div>
         <ul class="nav navbar-nav navbar-right">
           <li><a href="#"><i class="fa fa-question-circle"></i></a></li>
@@ -48,8 +48,17 @@
 
 <script>
   export default {
+    props: {
+      value: String
+    },
+    methods: {
+      switchView(mode_name){
+        this.value = mode_name
+        console.log(this.value)
+      }
+    },
     mounted() {
-      console.log('ok.')
+      // console.log(this.value)
     }
   }
 </script>
