@@ -50,37 +50,36 @@
     <section id="work_space">
       <div id="text_block" :class="text_width">
         <codemirror v-model="code" :options="editorOptions"></codemirror>
+        <!-- footer start -->
+        <div class="configbar">
+          <div class="cursor-info">
+            Line 10, Column 8 - 30 Lines
+          </div>
+          <div class="pull-right config-items">
+            <div class="config-item"><a href="#"><i class="fa fa-check"></i></a></div>
+            <div class="config-item"><a href="#"><i class="fa fa-sun-o"></i></a></div>
+            <div class="config-item">Tab Size: 4</div>
+            <div class="btn-group dropup config-item">
+              <a class="dropdown-toggle" data-toggle="dropdown">
+                Sublime
+              </a>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <li><a href="#">Sublime</a></li>
+                <li><a href="#">Emacs</a></li>
+                <li><a href="#">Vim</a></li>
+              </ul>
+            </div>
+            <div class="config-item"><a href="#"><i class="fa fa-wrench"></i></a></div>
+            <div class="config-item">Length: 150</div>
+          </div>
+        </div>
+        <!-- footer end -->
       </div>
       <div id="view_block" :class="preview_width">
         {{ code }}
       </div>
     </section>
     <!-- body end -->
-
-    <!-- footer start -->
-    <div class="configbar">
-      <div class="cursor-info">
-        Line 10, Column 8 - 30 Lines
-      </div>
-      <div class="pull-right config-items">
-        <div class="config-item"><a href="#"><i class="fa fa-check"></i></a></div>
-        <div class="config-item"><a href="#"><i class="fa fa-sun-o"></i></a></div>
-        <div class="config-item">Tab Size: 4</div>
-        <div class="btn-group dropup config-item">
-          <a class="dropdown-toggle" data-toggle="dropdown">
-            Sublime
-          </a>
-          <ul class="dropdown-menu dropdown-menu-right">
-            <li><a href="#">Sublime</a></li>
-            <li><a href="#">Emacs</a></li>
-            <li><a href="#">Vim</a></li>
-          </ul>
-        </div>
-        <div class="config-item"><a href="#"><i class="fa fa-wrench"></i></a></div>
-        <div class="config-item">Length: 150</div>
-      </div>
-    </div>
-    <!-- footer end -->
   </div>
 </template>
 
@@ -152,12 +151,9 @@
     font-weight: bold;
   }
   .CodeMirror {
-    height: 100%;
+    height: calc(100vh - 50px - 2px - 20px - 10px);
     background-color: #444;
     color: white;
-  }
-  #text_block, #view_block {
-    height: calc(100vh - 50px - 2px - 20px - 10px) !important;
   }
   .full_width {
     width: 100vw;
@@ -173,7 +169,7 @@
     color: white;
     font-size: 8px;
     border-top: 1px solid #666;
-    width: 100vw;
+    width: 100%;
   }
   .cursor-info {
     padding: 5px 10px;
