@@ -46,11 +46,18 @@
     </nav>
     <!-- header end -->
 
-    <!-- header start -->
-    <codemirror v-model="code" :options="editorOptions"></codemirror>
-    <!-- header end -->
+    <!-- body start -->
+    <section id="work_space">
+      <div id="text_block" :class="text_width">
+        <codemirror v-model="code" :options="editorOptions"></codemirror>
+      </div>
+      <div id="view_block" :class="preview_width">
+        {{ code }}
+      </div>
+    </section>
+    <!-- body end -->
 
-    <!-- header start -->
+    <!-- footer start -->
     <div class="configbar">
       <div class="cursor-info">
         Line 10, Column 8 - 30 Lines
@@ -73,7 +80,7 @@
         <div class="config-item">Length: 150</div>
       </div>
     </div>
-    <!-- header end -->
+    <!-- footer end -->
   </div>
 </template>
 
@@ -81,16 +88,35 @@
   export default {
     methods: {
       showMode() {
-        // console.log(123);
-        console.log(this.viewMode)
+        console.log('Current mode : ' + this.viewMode)
       }
     },
     mounted() {
       console.log('Editor mounted.')
     },
+    computed: {
+      text_width() {
+        if (this.viewMode == 'edit') {
+          return 'full_width';
+        } else if (this.viewMode == 'preview') {
+          return 'half_width';
+        } else {
+          return 'hidden';
+        }
+      },
+      preview_width() {
+        if (this.viewMode == 'view') {
+          return 'full_width';
+        } else if (this.viewMode == 'preview') {
+          return 'half_width';
+        } else {
+          return 'hidden';
+        }
+      }
+    },
     data() {
       return {
-        viewMode: "456",
+        viewMode: "edit",
         code: "Welcome to UniMD!\n\n## How we built this app:\n * Vue\n * Swoole\n * Laravel\n\n> Feel free to send pull requests!",
         editorOptions: {
           // codemirror options
@@ -126,9 +152,21 @@
     font-weight: bold;
   }
   .CodeMirror {
-    height: calc(100vh - 50px - 2px - 20px - 10px) !important;
+    height: 100%;
     background-color: #444;
     color: white;
+  }
+  #text_block, #view_block {
+    height: calc(100vh - 50px - 2px - 20px - 10px) !important;
+  }
+  .full_width {
+    width: 100vw;
+  }
+  .half_width {
+    width: 50vw;
+  }
+  .hidden {
+    width: 0vw;
   }
   .configbar {
     background-color: #222;
@@ -162,5 +200,9 @@
   }
   .config-item .dropdown-menu > li > a {
     color: white;
+  }
+  #work_space {
+    display: flex;
+    flex-direction: row;
   }
 </style>
