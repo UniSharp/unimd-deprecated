@@ -1,29 +1,37 @@
 <template>
   <div class="btn-group navbar-btn" role="group" aria-label="...">
-    <a class="btn btn-default" @click="switchView('view')"><i class="fa fa-eye"></i></a>
-    <a class="btn btn-default" @click="switchView('preview')"><i class="fa fa-columns"></i></a>
-    <a class="btn btn-default" @click="switchView('edit')"><i class="fa fa-pencil"></i></a>
+    <a class="btn btn-default" @click="switchView(mode.name)" v-for="mode in modes"><i :class="'fa fa-' + mode.icon"></i></a>
   </div>
 </template>
 
 <script>
   export default {
     props: {
-      mode: String
+      value: String
     },
-    // data() {
-    //   return {
-    //     mode_name: this.mode
-    //   }
-    // },
+    data() {
+      return {
+        modes: [
+          {
+            name: "view",
+            icon: "eye"
+          },
+          {
+            name: "preview",
+            icon: "columns"
+          },
+          {
+            name: "edit",
+            icon: "pencil"
+          }
+        ]
+      }
+    },
     methods: {
       switchView(new_mode_name) {
-        this.$emit('change:mode', new_mode_name)
+        this.$emit('input', new_mode_name)
+        this.$emit('change')
       }
     }
   }
 </script>
-
-<style>
-
-</style>

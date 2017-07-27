@@ -9,7 +9,7 @@
             &nbsp;UniMD
           </a>
 
-          <modeswitcher :mode="viewMode" @change:mode="val => viewMode = val"></modeswitcher>
+          <modeswitcher v-model="viewMode" @change="showMode"></modeswitcher>
 
           <ul class="nav navbar-nav navbar-right">
             <li><a href="#"><i class="fa fa-question-circle"></i></a></li>
