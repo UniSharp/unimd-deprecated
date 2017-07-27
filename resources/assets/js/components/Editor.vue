@@ -60,7 +60,7 @@
             <div class="config-item"><a href="#"><i class="fa fa-sun-o"></i></a></div>
             <div class="config-item">Tab Size: 4</div>
 
-            <keybinding v-model="keyMode"></keybinding>
+            <keybinding v-model="keyMode" @change="updateKeyMap"></keybinding>
 
             <div class="config-item"><a href="#"><i class="fa fa-wrench"></i></a></div>
             <div class="config-item">Length: {{ chars_count }}</div>
@@ -80,6 +80,10 @@
     methods: {
       showMode() {
         console.log('Current mode : ' + this.viewMode)
+      },
+      updateKeyMap() {
+        console.log('Current key map : ' + this.keyMode)
+        // this.editorOptions.keyMap = this.keyMode
       }
     },
     computed: {
