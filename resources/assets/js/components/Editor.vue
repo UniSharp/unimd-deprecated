@@ -53,7 +53,7 @@
         <!-- footer start -->
         <div class="configbar">
           <div class="cursor-info">
-            Line 10, Column 8 - 30 Lines
+            Line 10, Column 8 -- {{ lines_count }} Lines
           </div>
           <div class="pull-right config-items">
             <div class="config-item"><a href="#"><i class="fa fa-check"></i></a></div>
@@ -61,16 +61,17 @@
             <div class="config-item">Tab Size: 4</div>
             <div class="btn-group dropup config-item">
               <a class="dropdown-toggle" data-toggle="dropdown">
-                Sublime
+                Default
               </a>
               <ul class="dropdown-menu dropdown-menu-right">
                 <li><a href="#">Sublime</a></li>
                 <li><a href="#">Emacs</a></li>
                 <li><a href="#">Vim</a></li>
+                <li><a href="#">Default</a></li>
               </ul>
             </div>
             <div class="config-item"><a href="#"><i class="fa fa-wrench"></i></a></div>
-            <div class="config-item">Length: 150</div>
+            <div class="config-item">Length: {{ chars_count }}</div>
           </div>
         </div>
         <!-- footer end -->
@@ -111,6 +112,13 @@
         } else {
           return 'hidden';
         }
+      },
+      chars_count() {
+        return this.code.length
+      },
+      lines_count() {
+        // var textarea = document.querySelector(".CodeMirror")[0];
+        return this.code.split("\n").length;
       }
     },
     data() {
