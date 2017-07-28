@@ -30,19 +30,9 @@ socket:
 serve:
 	php artisan serve --host=0.0.0.0
 
-test:
-	vendor/bin/phpunit --coverage-text
-	vendor/bin/phpcs --version && echo && vendor/bin/phpcs -p --standard=PSR2 app tests
-
 build:
-	./node_modules/.bin/gulp
+	# ./node_modules/.bin/gulp
+	yarn dev
 
-build-prod:
-	./node_modules/.bin/gulp --production
-
-watch: build
-	./node_modules/.bin/gulp watch
-
-clean:
-	./node_modules/.bin/gulp clean
-	rm -rf bower_components node_modules
+watch:
+	yarn watch
