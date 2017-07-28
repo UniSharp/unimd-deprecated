@@ -50,6 +50,7 @@
     <section id="work_space">
       <div id="text_block" :class="text_width">
         <codemirror v-model="code" :options="editorOptions" ref="textEditor" @cursorActivity="showInfo"></codemirror>
+
         <!-- footer start -->
         <div class="configbar">
           <div class="cursor-info">
@@ -58,7 +59,8 @@
           <div class="pull-right config-items">
             <div class="config-item"><a href="#"><i class="fa fa-check"></i></a></div>
             <div class="config-item"><a href="#"><i class="fa fa-sun-o"></i></a></div>
-            <div class="config-item">Tab Size: 4</div>
+
+            <indentswitcher v-model="indentMode" @change="updateIndent"></indentswitcher>
 
             <keybinding v-model="keyMode" @change="updateKeyMap"></keybinding>
 
@@ -88,6 +90,10 @@
       showInfo(editor) {
         this.current_line = this.$refs.textEditor.editor.getCursor().line + 1
         this.current_column = this.$refs.textEditor.editor.getCursor().ch + 1
+      },
+      updateIndent() {
+        this.editorOptions.indentWithTabs = this.indentMode.useTab
+        this.editorOptions.tabSize = this.indentMode.spaces
       }
     },
     computed: {
@@ -120,12 +126,17 @@
       return {
         viewMode: "edit",
         keyMode: "default",
+        indentMode: {
+          useTab: false,
+          spaces: 4
+        },
         current_line: 1,
         current_column: 1,
         code: "Welcome to UniMD!\n\n## How we built this app:\n * Vue\n * Swoole\n * Laravel\n\n> Feel free to send pull requests!",
         editorOptions: {
           // codemirror options
-          // tabSize: 4,
+          tabSize: 4,
+          indentWithTabs: false,
           mode: 'text/x-markdown',
           // theme: 'base16-dark',
           // // sublime、emacs、vim三种键位模式，支持你的不同操作习惯
