@@ -49,11 +49,11 @@
     <!-- body start -->
     <section id="work_space">
       <div id="text_block" :class="text_width">
-        <codemirror v-model="code" :options="editorOptions"></codemirror>
+        <codemirror v-model="code" :options="editorOptions" ref="textEditor" @cursorActivity="showInfo"></codemirror>
         <!-- footer start -->
         <div class="configbar">
           <div class="cursor-info">
-            Line 10, Column 8 -- {{ lines_count }} Lines
+            Line {{ current_line }}, Column {{ current_column }} -- {{ lines_count }} Lines
           </div>
           <div class="pull-right config-items">
             <div class="config-item"><a href="#"><i class="fa fa-check"></i></a></div>
@@ -82,8 +82,12 @@
         console.log('Current mode : ' + this.viewMode)
       },
       updateKeyMap() {
+        this.editorOptions.keyMap = this.keyMode
         console.log('Current key map : ' + this.keyMode)
-        // this.editorOptions.keyMap = this.keyMode
+      },
+      showInfo(editor) {
+        this.current_line = this.$refs.textEditor.editor.getCursor().line + 1
+        this.current_column = this.$refs.textEditor.editor.getCursor().ch + 1
       }
     },
     computed: {
@@ -116,6 +120,8 @@
       return {
         viewMode: "edit",
         keyMode: "default",
+        current_line: 1,
+        current_column: 1,
         code: "Welcome to UniMD!\n\n## How we built this app:\n * Vue\n * Swoole\n * Laravel\n\n> Feel free to send pull requests!",
         editorOptions: {
           // codemirror options
